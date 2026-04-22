@@ -12,13 +12,13 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware to parse JSON bodies
-app.use(express.json());
-app.use(rateLimit);
 app.use(
 	cors({
 		origin: "http://localhost:5173",
 	}),
 ); // Allow access to every URL, Prevent Access-Control-Allow-Origin error
+app.use(express.json());
+app.use(rateLimit);
 
 app.use("/api/notes", noteRoutes);
 
