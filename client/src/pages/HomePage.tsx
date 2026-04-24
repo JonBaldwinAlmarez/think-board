@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import NoteCard from "../components/NoteCard";
 import api from "../lib/axios";
 import type { Note } from "../types/notes";
+import NotesNotFound from "../components/NotesNotFound";
 
 const HomePage = () => {
 	const [isRateLimit, setIsRatelimit] = useState<boolean>(false);
@@ -41,6 +42,8 @@ const HomePage = () => {
 				{loading && (
 					<div className="text-center text-primary py-10">loading...</div>
 				)}
+
+				{notes.length === 0 && !isRateLimit && <NotesNotFound />}
 
 				{notes.length > 0 && !isRateLimit && (
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
