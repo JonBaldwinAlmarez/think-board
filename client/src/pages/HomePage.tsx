@@ -16,11 +16,11 @@ const HomePage = () => {
 		const fetchNote = async () => {
 			try {
 				const res = await api.get("/notes");
-				console.log(res.data);
+				//console.log(res.data);
 				setNotes(res.data);
 				setIsRatelimit(false);
 			} catch (error: any) {
-				console.error(`Fetching failed:	${error}`);
+				//console.error(`Fetching failed:	${error}`);
 				if (error.response?.status === 429) {
 					setIsRatelimit(true);
 				} else {
