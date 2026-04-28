@@ -6,21 +6,33 @@ import { connectDB } from "./config/db.js";
 import noteRoutes from "./routes/notesRoutes.js";
 import rateLimit from "../middleware/rateLimiter.js";
 
+import path from "path";
+
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const __dirname = path.resolve();
 
-// Middleware to parse JSON bodies
-app.use(
-	cors({
-		origin: "http://localhost:5173",
-	}),
-); // Allow access to every URL, Prevent Access-Control-Allow-Origin error
+if (process.env.NODE_ENV !== "production") {
+	// Middleware to parse JSON bodies
+	app.use(
+		cors({
+			origin: "http://localhost:5173",
+		}),
+	); // Allow access to every URL, Prevent Access-Control-Allow-Origin error
+}
 app.use(express.json());
 app.use(rateLimit);
 
 app.use("/api/notes", noteRoutes);
+app.use(express.static(path.join(__dirname, "../client/dist")));
+
+if (process.env.NODE_ENV === "production") {
+	app.get("*", (req, res) => {
+		res.sendFile(path.join(__dirname, "../client", "dist", "index.html"));
+	});
+}
 
 connectDB()
 	.then(() => {
